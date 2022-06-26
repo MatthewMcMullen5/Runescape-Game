@@ -1,14 +1,14 @@
-from os import system, name
 import random
-from Bestiary import *
+from Bestiary import monster_list, boss_list
 
 
 class Character:
-    def __init__(self, name, health, inventory, level):
+    def __init__(self, name, health, inventory, level, has_healed):
         self.name = name
         self.health = health
         self.inventory = inventory
         self.level = level
+        self.has_healed = False
 
 
 class bcolors:
@@ -34,57 +34,40 @@ def fight_header():
         f"{bcolors.ENDC}~{user.name}~      ~HP {user.health}~        ~LVL {user.level}~\n")
 
 
-def clear():
-    if name == 'nt':
-        _ = system('cls')
-    else:
-        _ = system('clear')
-
-
 def home_screen():
     options = ['fight', 'rest', 'check', 'quit']
-    choice = False
-    has_healed = False
 
-    while choice is not True:
+    while True:
         game_header()
-        data = str(input("Choose what to do next!\nFight - Rest - Check - Quit\n"))
-        clear()
+        data = str(input("Choose what to do next!\nFight - Rest - Check - Quit\n")).lower()
 
-        if data.lower() == "fight":
+        if data == "fight":
             fight()
-            choice = True
-            has_healed = False
 
-        if data.lower() == "rest":
-            if has_healed is False:
-                rest()
-                has_healed = True
-                choice = True
-            else:
-                home_screen()
+        if data == "rest":
+            rest()
 
-        if data.lower() == "check":
+        if data == "check":
             check()
-            choice = True
 
-        if data.lower() == "quit":
-            clear()
+        if data == "quit":
             user.health = 0
             game_header()
             print("Thank you for playing!\n")
             quit()
 
-        if data.lower() not in options:
+        if data not in options:
             print("invalid input, try again")
-            clear()
 
 
 def rest():
-    random_heal = random.randrange(1, 11)
-    print(f"You rest, and heal {bcolors.FAIL}{random_heal}{bcolors.ENDC} health.")
-    user.health += random_heal
-    home_screen()
+    if user.has_healed is False:
+        random_heal = random.randrange(1, 11)
+        print(f"You rest, and heal {bcolors.FAIL}{random_heal}{bcolors.ENDC} health.")
+        user.health += random_heal
+        user.has_healed = True
+    else:
+        print(f"You have already been healed! Try again after fighting!")
 
 
 def fight():
@@ -136,55 +119,54 @@ def check():
     print("You check your equipment")
     home_screen()
 
+
 def die():
     print("Oh dear, you are dead.")
     quit()
+
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~GAME STARTS HERE~~~~~~~~~~~~~~~~~~~~~~~~#
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
-user = Character("", 5, [], 0)
-game_header()
-
+user = Character("", 5, [], 0, False)
 user.name = str(input("Choose a name! "))
 
-clear()
-game_header()
+while True:
+    home_screen()
 
-age_limit = 16
-is_old_enough = False
-while is_old_enough is not True:
-    try:
-        age = int(input("How old are you? "))
+# game_header()
 
-        if age >= age_limit:
-            print("You're old enough to play!")
-            is_old_enough = True
-
-        if age < age_limit:
-            print(f"You're not old enough to play! It's for ages {age_limit} and up!")
-            exit()
-
-    except (ValueError, NameError):
-        clear()
-        game_header()
-        print("Enter a number you dingus.")
-
-wants_to_play = False
-while wants_to_play is not True:
-
-    decision = input(f"Would you like to play? (Yes/No) ").lower()
-
-    if decision == "yes":
-        wants_to_play = True
-
-    elif decision == "no":
-        clear()
-        game_header()
-        print("Understandable, have a nice day.")
-        exit()
-
-clear()
-
-home_screen()
+# age_limit = 16
+# is_old_enough = False
+# while is_old_enough is not True:
+#     try:
+#         age = int(input("How old are you? "))
+#
+#         if age >= age_limit:
+#             print("You're old enough to play!")
+#             is_old_enough = True
+#
+#         if age < age_limit:
+#             print(f"You're not old enough to play! It's for ages {age_limit} and up!")
+#             exit()
+#
+#     except (ValueError, NameError):
+#         game_header()
+#         print("Enter a number!")
+#
+# wants_to_play = False
+# while wants_to_play is not True:
+#
+#     decision = input(f"Would you like to play? (Yes/No) ").lower()
+#
+#     if decision == "yes":
+#         wants_to_play = True
+#
+#     elif decision == "no":
+#         game_header()
+#         print("Understandable, have a nice day.")
+#         exit()
+#
+#
+# home_screen()
