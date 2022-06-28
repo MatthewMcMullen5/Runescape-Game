@@ -18,8 +18,8 @@ class boss_monster:
 
 
 # monsters
-goblin = monster('Goblin', 5, 15, 1, 2)
-spider = monster('Spider', 2, 10, 0, 1)
+goblin = monster('Goblin', 5, 10, 1, 1)
+spider = monster('Spider', 2, 5, 0, 1)
 
 monster_list = [goblin, spider]
 
@@ -27,4 +27,4 @@ monster_list = [goblin, spider]
 obor = boss_monster('Obor', 106, 120, 6, 20)
 bryophyta = boss_monster('Bryophyta', 128, 115, 5, 25)
 
-boss_list = [obor]
+boss_list = [obor, bryophyta]

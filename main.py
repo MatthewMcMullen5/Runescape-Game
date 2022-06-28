@@ -85,7 +85,7 @@ def fight():
             die()
 
         if decide == "attack":
-            damage = random.randrange(user.level + 5)
+            damage = random.randrange(user.level + 5 - encounter.defence)
             encounter_health -= damage
 
             encounter_damage = random.randrange(encounter.attack)
@@ -112,6 +112,7 @@ def fight():
 
     user.level += encounter.level
     print(f"You have defeated the {encounter.name} and gained {encounter.level} XP!")
+    user.has_healed == False
     home_screen()
 
 
